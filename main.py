@@ -138,10 +138,12 @@ def main():
     dispatcher.add_error_handler(error)
 
     # Start the bot
-    updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
-                          url_path=TOKEN)
-    updater.bot.setWebhook('https://lkcmed-guide-bot.herokuapp.com/' + TOKEN)
+    # updater.start_webhook(listen="0.0.0.0",
+    #                       port=int(PORT),
+    #                       url_path=TOKEN,
+    #                       webhook_url="https://lkcmed-guide-bot.herokuapp.com/" + TOKEN,
+    #                       force_event_loop=True)
+    updater.start_polling()
     updater.idle()
 
 
