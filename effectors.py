@@ -1,6 +1,7 @@
 from telegram import ParseMode
-import options
+import options, os
 
+dir = os.path.dirname(__file__)
 
 def directions_CSB_location(update, context):
     context.bot.send_location(chat_id=update.effective_chat.id, latitude=1.3219004809007464,
@@ -185,7 +186,7 @@ def shuttle_hall6(update, context):
                                   "but don't worry, there's still the option of the regular buses!",
                              parse_mode=ParseMode.HTML)
     context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open('assets\hall6_bus_sample.png', 'rb'),
+                           photo=open(os.path.join(dir, 'assets', 'hall6_bus_sample.png'), 'rb'),
                            caption='This is a sample timetable for the scheduled shuttle bus. This can be found on '
                                    'your iLKC portal and is updated monthly. The number on the left signifies the '
                                    'year that it is catered for (e.g. 1 = M1 students), and on the right is the '
@@ -212,7 +213,7 @@ def shuttle_EMB(update, context):
                                   "stops instead if they are more convenient depending on where you are in NTU!",
                              parse_mode=ParseMode.HTML)
     context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open('assets\emb_bus_sample.jpg', 'rb'),
+                           photo=open(os.path.join(dir, 'assets', 'emb_bus_sample.jpg'), 'rb'),
                            caption='This is the route taken for the EMB - CSB shuttle; note that it does not stop at '
                                    'Hall 6 or CresPion!')
     options.back_only_keyboard('shuttle_ntu_novena', update, context)
@@ -228,17 +229,17 @@ def shuttle_yunnan(update, context):
                                   "for each bus route. (Available for both Android and iOS users)",
                              parse_mode=ParseMode.HTML)
     context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open('assets\CLR_route.jpg', 'rb'),
+                           photo=open(os.path.join(dir, 'assets', 'CLR_route.jpg'), 'rb'),
                            caption='<b>Campus Loop Red</b>\nThis bus goes around the campus in a CLOCKWISE direction, '
                                    'and stops at Hall 1 (which is across the road from Crespion)',
                            parse_mode=ParseMode.HTML)
     context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open('assets\CLB_route.jpg', 'rb'),
+                           photo=open(os.path.join(dir, 'assets', 'CLB_route.jpg'), 'rb'),
                            caption='<b>Campus Loop Blue</b>\nThis bus goes around the campus in an ANTI-CLOCKWISE '
                                    'direction, and stops at Hall 6 (which is adjacent to Crespion)',
                            parse_mode=ParseMode.HTML)
     context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open('assets\CR_route.jpg', 'rb'),
+                           photo=open(os.path.join(dir, 'assets', 'CR_route.jpg'), 'rb'),
                            caption='<b>Campus Rider Green</b>\nThis bus stops at Hall 1 (which is across the road '
                                    'from Crespion), and shuttles between Pioneer MRT Station and the NTU Yunnan '
                                    'Garden Campus so have no worries coming to school by MRT!',
@@ -260,7 +261,7 @@ def supply_demand(update, context):
                                   "much about the price!",
                              parse_mode=ParseMode.HTML)
     context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open('assets\supply_demand.jpg', 'rb'),
+                           photo=open(os.path.join(dir, 'assets', 'supply_demand.jpg'), 'rb'),
                            caption='Source: https://burpple-2.imgix.net/venue_images/lkc_091117-3-jpg_4051_original')
     options.back_only_keyboard('food_novena', update, context)
 
@@ -273,7 +274,7 @@ def belle_ville(update, context):
                                   "oh wells, you make the rule on what you wanna eat for lunch!",
                              parse_mode=ParseMode.HTML)
     context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open('assets\pancake.jpg', 'rb'),
+                           photo=open(os.path.join(dir, 'assets', 'pancake.jpg'), 'rb'),
                            caption='Source: https://www.misstamchiak.com/wp-content/uploads/2019/04/Belle'
                                    '-villepancakecafefeaturedimage1.jpg')
     options.back_only_keyboard('food_novena', update, context)
