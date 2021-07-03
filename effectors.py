@@ -27,7 +27,7 @@ def directions_CSB_novena(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text='Please wait while we send you a video of the route...')
     context.bot.send_video(chat_id=update.effective_chat.id,
-                           video=open('assets\CSB_novena_video.mp4', 'rb'),
+                           video=open(os.path.join(dir, 'assets', 'CSB_novena_video.mp4'), 'rb'),
                            caption='Video: CSB from Novena MRT',
                            width=1920, height=1080)
 
@@ -63,7 +63,6 @@ def directions_EMB_pioneer(update, context):
 
 # CSB FACILITIES FUNCTIONS
 
-# TODO CHECK FOR COPYRIGHT FOR IMAGES
 def CSB_l5(update, context):
     """Showcase facilities in CSB Level 5"""
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -85,7 +84,6 @@ def CSB_l5(update, context):
     options.back_only_keyboard('facilities_CSB', update, context)
 
 
-# TODO Attach image of Comms Suites
 def CSB_l6(update, context):
     """Showcase facilities in CSB Level 6"""
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -102,7 +100,6 @@ def CSB_l6(update, context):
     options.back_only_keyboard('facilities_CSB', update, context)
 
 
-# TODO Attach image of Anat Lab
 def CSB_l7(update, context):
     """Showcase facilities in CSB Level 7"""
     context.bot.send_message(chat_id=update.effective_chat.id,
@@ -119,18 +116,13 @@ def CSB_l7(update, context):
     options.back_only_keyboard('facilities_CSB', update, context)
 
 
-# TODO Attach image of Gym / House Room / etc
-# TODO CHECK FOR COPYRIGHT FOR IMAGES
 def CSB_l8(update, context):
     """Showcase facilities in CSB Level 5"""
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Here's what you can find at Level 5 of CSB: <b>House Room</b>, <b>Student "
                                   "Lounge</b>, <b>Music Room</b>, <b>Gym</b>, <b>Multipurpose Hall</b>!",
                              parse_mode=ParseMode.HTML)
-    # CHECK FOR COPYRIGHT
-    # context.bot.send_photo(chat_id=update.effective_chat.id,
-    #                        photo=open('assets\CSB_gym.png', 'rb'),
-    #                        caption='Gym, CSB Level 8')
+
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Level 8 is where all the fun is at. Level 8 houses our very own <b>Gym</b>, "
                                   "so if you're feeling tired from studying and mugging head down for a short "
@@ -151,10 +143,7 @@ def CSB_l20(update, context):
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Here's what you can find at Level 20 of CSB: <b>Library</b>!",
                              parse_mode=ParseMode.HTML)
-    # CHECK FOR COPYRIGHT
-    # context.bot.send_photo(chat_id=update.effective_chat.id,
-    #                        photo=open('assets\CSB_library.jpg', 'rb'),
-    #                        caption='Gym, CSB Level 8')
+
     context.bot.send_message(chat_id=update.effective_chat.id,
                              text="Fancy to bring out the mugger in you? Have a TBL coming and need a quiet place "
                                   "besides home or hall to do your preparations? Look no further as the <b>CSB "
@@ -260,9 +249,9 @@ def supply_demand(update, context):
                                   "will allow you to receive a 20% student discount so you won’t have to worry too "
                                   "much about the price!",
                              parse_mode=ParseMode.HTML)
-    context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open(os.path.join(dir, 'assets', 'supply_demand.jpg'), 'rb'),
-                           caption='Source: https://burpple-2.imgix.net/venue_images/lkc_091117-3-jpg_4051_original')
+    # context.bot.send_photo(chat_id=update.effective_chat.id,
+    #                        photo=open(os.path.join(dir, 'assets', 'supply_demand.jpg'), 'rb'),
+    #                        caption='Source: https://burpple-2.imgix.net/venue_images/lkc_091117-3-jpg_4051_original')
     options.back_only_keyboard('food_novena', update, context)
 
 
@@ -273,10 +262,10 @@ def belle_ville(update, context):
                                   "be sure to indulge in this savoury! It’s more of a dessert place to be honest but "
                                   "oh wells, you make the rule on what you wanna eat for lunch!",
                              parse_mode=ParseMode.HTML)
-    context.bot.send_photo(chat_id=update.effective_chat.id,
-                           photo=open(os.path.join(dir, 'assets', 'pancake.jpg'), 'rb'),
-                           caption='Source: https://www.misstamchiak.com/wp-content/uploads/2019/04/Belle'
-                                   '-villepancakecafefeaturedimage1.jpg')
+    # context.bot.send_photo(chat_id=update.effective_chat.id,
+    #                        photo=open(os.path.join(dir, 'assets', 'pancake.jpg'), 'rb'),
+    #                        caption='Source: https://www.misstamchiak.com/wp-content/uploads/2019/04/Belle'
+    #                                '-villepancakecafefeaturedimage1.jpg')
     options.back_only_keyboard('food_novena', update, context)
 
 
