@@ -17,7 +17,7 @@ FOOD_OPTIONS = [
 
 EXTRACURRICULARS = [
     ('LKCrew', 'lkcrew'),
-    ('MedLee', 'medlee'),
+    ('Medlee', 'medlee'),
     ("LKC Students' Medical Society", 'medsoc'),
     ('Go Back', 'start')
 ]
@@ -25,6 +25,8 @@ EXTRACURRICULARS = [
 STUDYING = [
     ('Study Spots', 'study_spots'),
     ('Study Tips', 'study_tips'),
+    ('Dress Code for Lessons', 'dress_code'),
+    ('Apps and Websites of LKC', 'apps_websites'),
     ('Go Back', 'start')
 ]
 
@@ -72,6 +74,22 @@ FOOD_YUNNAN = [
     ('Go Back', 'food_options')
 ]
 
+STUDY_SPOTS = [
+    ('Study Spot: CSB Library', 'study_CSB_library'),
+    ('Study Spot: North Spine', 'study_north_spine'),
+    ('Study Spot: Hall TV Lounge', 'study_hall_tv'),
+    ('Study Spot: CSB House Rooms', 'study_CSB_rooms'),
+    ('Go Back', 'studying')
+]
+
+STUDY_TIPS = [
+    ('Study Materials', 'study_materials'),
+    ('Pen & Paper vs Digital Studying', 'pen_paper_digital'),
+    ('Study Methods', 'study_methods'),
+    ('Research Reports', 'research_reports'),
+    ('Go Back', 'studying')
+]
+
 
 def back_only_keyboard(home_callback, update, context):
     keyboard = [
@@ -80,8 +98,9 @@ def back_only_keyboard(home_callback, update, context):
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     context.bot.send_message(chat_id=update.effective_chat.id,
-                             text='Go back to previous menu or return all the way to the start?',
-                             reply_markup=reply_markup)
+                             text='<i>Go back to previous menu or return all the way to the start?</i>',
+                             reply_markup=reply_markup,
+                             parse_mode=ParseMode.HTML)
 
 
 class OptionsMenu:

@@ -5,6 +5,7 @@ import logging
 
 TOKEN = os.environ['TOKEN']
 PORT = int(os.environ.get('PORT', 8443))
+IS_HEROKU = (os.environ.get('IS_HEROKU', 'False') == 'True')
 
 # LOGGERS & ERROR HANDLING
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -23,7 +24,7 @@ def start(update, context):
         [InlineKeyboardButton('Campuses & Transport', callback_data='campuses_transport')],
         [InlineKeyboardButton('Food Recommendations', callback_data='food_options')],
         [InlineKeyboardButton('Extracurriculars', callback_data='extracurriculars')],
-        [InlineKeyboardButton('Studying', callback_data='studying')]
+        [InlineKeyboardButton('Studying in LKCMedicine', callback_data='studying')]
     ]
 
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -46,11 +47,14 @@ EMB_main = options.OptionsMenu(title_text='Experimental Medicine Building (NTU)'
                                options_list=options.EMB_MAIN).make_keyboard()
 facilities_CSB = options.OptionsMenu(title_text='CSB Facilities', options_list=options.FACILITIES_CSB).make_keyboard()
 
-shuttle_ntu_novena = options.OptionsMenu(title_text='Shuttle Bus (NTU - Novena)', options_list=options.SHUTTLE_NTU_NOVENA).make_keyboard()
+shuttle_ntu_novena = options.OptionsMenu(title_text='Shuttle Bus (NTU - Novena)',
+                                         options_list=options.SHUTTLE_NTU_NOVENA).make_keyboard()
 
 food_novena = options.OptionsMenu(title_text='Food at Novena', options_list=options.FOOD_NOVENA).make_keyboard()
-
 food_yunnan = options.OptionsMenu(title_text='Food at Yunnan Gardens', options_list=options.FOOD_YUNNAN).make_keyboard()
+
+study_spots = options.OptionsMenu(title_text='Studying Spots', options_list=options.STUDY_SPOTS).make_keyboard()
+study_tips = options.OptionsMenu(title_text='Studying Tips', options_list=options.STUDY_TIPS).make_keyboard()
 
 
 def switch(arg):
@@ -96,8 +100,28 @@ def switch(arg):
         'food_south_spine': (effectors.food_south_spine, 'South Spine Food Court'),
         'crespion_canteen': (effectors.crespion_canteen, 'CresPion Canteen'),
         'other_canteens': (effectors.other_canteens, 'Other Canteens'),
-        'food_phone': (effectors.food_phone, 'On Your Phone')
+        'food_phone': (effectors.food_phone, 'On Your Phone'),
+
+        # Extracurriculars
+        'lkcrew': (effectors.lkcrew, 'LKCrew'),
+        'medlee': (effectors.medlee, 'Medlee'),
+        'medsoc': (effectors.medsoc, "LKC Students' Medical Society"),
+
+        # Studying
+        'study_spots': (study_spots, 'Study Spots at NTU / LKC'),
+        'study_CSB_library': (effectors.study_CSB_library, 'Study Spot: CSB Library'),
+        'study_north_spine': (effectors.study_north_spine, 'Study Spot: North Spine'),
+        'study_hall_tv': (effectors.study_hall_tv, 'Study Spot: Hall TV Lounge'),
+        'study_CSB_rooms': (effectors.study_CSB_rooms, 'Study Spot: CSB House Rooms'),
+        'study_tips': (study_tips, 'Studying Tips'),
+        'study_materials': (effectors.study_materials, 'Study Materials'),
+        'pen_paper_digital': (effectors.pen_paper_digital, 'Pen & Paper vs Digital'),
+        'study_methods': (effectors.study_methods, 'Study Methods'),
+        'research_reports': (effectors.research_reports, 'Research Reports'),
+        'dress_code': (effectors.dress_code, 'Dress Code for Lessons'),
+        'apps_websites': (effectors.apps_websites, 'Apps and Websites of LKC')
     }
+
     return switch_dict.get(arg)
 
 
@@ -107,17 +131,31 @@ def button(update, context):
     query.answer()
     query.delete_message()
     context.bot.send_message(chat_id=update.effective_chat.id, text=f"You selected {switch(query.data)[1]}")
+    context.bot.send_message(chat_id=update.effective_chat.id, text="--------------------------------------")
 
     switch(query.data)[0](update, context)
 
 
 def help(update, context):
     """Send message when /help sent"""
-    context.bot.send_message(chat_id=update.effective_chat.id, text='You typed help!')
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text='Navigate through the bot using the buttons in '
+                                  'the Telegram chat. If the bot ever stops or you '
+                                  'get stuck, type /start to return to the Main '
+                                  'Menu at any time.')
+
+
+def about(update, context):
+    """Send message when /help sent"""
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text='Content created by Logistics team of LKCMedicine FOP 2021. Telegram Bot created by '
+                                  'Rayhan Rahadian, LKCMedicine Class of 2025. Please PM @rayhaner99 on Telegram if '
+                                  'you encounter any problems with this bot.')
 
 
 def echo(update, context):
-    context.bot.send_message(chat_id=update.effective_chat.id, text=' '.join(update.message.text).upper())
+    context.bot.send_message(chat_id=update.effective_chat.id,
+                             text='Only /start, /help, and /about commands are recognized!')
 
 
 def main():
@@ -128,8 +166,8 @@ def main():
     # Add commands: /start, /help
     dispatcher.add_handler(CommandHandler('start', start))
     dispatcher.add_handler(CommandHandler('help', help))
+    dispatcher.add_handler(CommandHandler('about', about))
     dispatcher.add_handler(CallbackQueryHandler(button))
-    # dispatcher.add_handler(CommandHandler('CSB', goto_CSB))
 
     # Add commands: when anything is typed, repeat in caps
     dispatcher.add_handler(MessageHandler(Filters.text, echo))
@@ -138,12 +176,13 @@ def main():
     dispatcher.add_error_handler(error)
 
     # Start the bot
-    updater.start_webhook(listen="0.0.0.0",
-                          port=int(PORT),
-                          url_path=TOKEN,
-                          webhook_url="https://lkcmed-guide-bot.herokuapp.com/" + TOKEN,
-                          force_event_loop=True)
-    # updater.start_polling()
+    if IS_HEROKU:
+        updater.start_webhook(listen="0.0.0.0",
+                              port=int(PORT),
+                              url_path=TOKEN,
+                              webhook_url="https://lkcmed-guide-bot.herokuapp.com/" + TOKEN)
+    else:
+        updater.start_polling()
     updater.idle()
 
 
