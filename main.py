@@ -129,11 +129,14 @@ def button(update, context):
     """Parses the CallbackQuery"""
     query = update.callback_query
     query.answer()
-    query.delete_message()
-    context.bot.send_message(chat_id=update.effective_chat.id, text=f"You selected {switch(query.data)[1]}")
-    context.bot.send_message(chat_id=update.effective_chat.id, text="--------------------------------------")
-
-    switch(query.data)[0](update, context)
+    try:
+        query.delete_message()
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f"You selected {switch(query.data)[1]}")
+        context.bot.send_message(chat_id=update.effective_chat.id, text="--------------------------------------")
+        switch(query.data)[0](update, context)
+    except:
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text="Error, please type /start in the chat to restart.")
 
 
 def help(update, context):
